@@ -1,0 +1,244 @@
+
+/* ============================================================
+   Cool Slide — Skew Slider  |  V3 CSS
+   Changes from V2:
+     • .skew-slider-content is now centered on BOTH axes
+       (was: left-offset with 320px padding-left)
+     • All chrome styles (copyright, social, CTA btn) removed
+     • Elementor widget container integration styles added
+   ============================================================ */
+
+/* ---------- Custom Font Faces ---------- */
+@font-face {
+    font-family: 'ClashDisplay-Semibold';
+    src: url('../fonts/ClashDisplay-Semibold.woff2') format('woff2'),
+         url('../fonts/ClashDisplay-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'MangoGrotesque-Regular';
+    src: url('../fonts/MangoGrotesque-Regular.woff2') format('woff2'),
+         url('../fonts/MangoGrotesque-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ---------- CSS Custom Properties (scoped) ---------- */
+.skew-slider-area {
+    --tp-common-white: #ffffff;
+    --tp-common-black: #020201;
+    --tp-ff-clash-semibold: 'ClashDisplay-Semibold', sans-serif;
+    --tp-ff-mango: 'MangoGrotesque-Regular', sans-serif;
+}
+
+/* ---------- Scoped box-sizing reset ---------- */
+.skew-slider-area *,
+.skew-slider-area *::before,
+.skew-slider-area *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Outer area ---------- */
+.skew-slider-area {
+    position: relative;
+    overflow: hidden;
+    width:    100%;
+    height:   100vh;
+}
+
+/* ---------- Elementor integration ─────────────────────────────────────
+   The Elementor widget wrapper div (.elementor-widget-container) sometimes
+   adds default padding and has no overflow:hidden set, which causes the
+   100vh slider to appear clipped or offset.
+
+   These rules ensure the widget container is flush and the GSAP animations
+   don't bleed outside the section boundary.
+   ──────────────────────────────────────────────────────────────────── */
+.elementor-widget-cool-slide-skew-slider-v3 {
+    width:    100%;
+    display:  block;
+}
+.elementor-widget-cool-slide-skew-slider-v3 .elementor-widget-container {
+    padding:  0 !important;
+    height:   100%;
+    width:    100%;
+    overflow: hidden;
+}
+
+/* ---------- Slider grid container ---------- */
+.skew-slider-wrap {
+    width:                 100%;
+    height:                100vh;
+    display:               grid;
+    overflow:              hidden;
+    place-items:           center;
+    grid-template-rows:    100%;
+    grid-template-columns: 100%;
+}
+
+/* ---------- Slide base ---------- */
+.slide {
+    width:          100%;
+    height:         100%;
+    grid-area:      1 / 1 / -1 / -1;
+    pointer-events: none;
+    opacity:        0;
+    overflow:       hidden;
+    position:       relative;
+    display:        grid;
+    place-items:    center;
+    will-change:    transform, opacity;
+}
+.slide--current {
+    pointer-events: auto;
+    opacity:        1;
+}
+.slide--current .skew-slider-content {
+    opacity:    1;
+    visibility: visible;
+}
+
+/* ---------- Slide background image ---------- */
+.slide__img {
+    width:               100%;
+    height:              100%;
+    background-size:     cover;
+    background-position: 50% 50%;
+    background-repeat:   no-repeat;
+    will-change:         transform, opacity, filter;
+}
+
+/* ---------- Slide Content Overlay ─────────────────────────────────────
+   FIX: was left: 0; padding-left: 320px; transform: translateY(-50%)
+   NOW: centered on both X and Y axes via translate(-50%, -50%)
+   ──────────────────────────────────────────────────────────────────── */
+.skew-slider-content {
+    position:        absolute;
+    top:             50%;
+    left:            50%;
+    transform:       translate(-50%, -50%);
+    width:           80%;
+    max-width:       1100px;
+    text-align:      center;
+    padding:         0 40px;
+    opacity:         0;
+    visibility:      hidden;
+    z-index:         10;
+    pointer-events:  none;
+    transition:      opacity 0.4s ease, visibility 0.4s ease;
+}
+.slide--current .skew-slider-content {
+    pointer-events: all;
+}
+
+/* Content typography defaults (override freely in your shortcode output) */
+.skew-slider-content > span {
+    display:        inline-block;
+    margin-bottom:  15px;
+    font-weight:    600;
+    font-size:      16px;
+    line-height:    1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color:          var(--tp-common-white);
+}
+.skew-slider-content h4 {
+    font-size:      140px;
+    line-height:    0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color:          var(--tp-common-white);
+    font-family:    var(--tp-ff-clash-semibold);
+    margin:         0;
+}
+.skew-slider-content h4 a {
+    color:           inherit;
+    text-decoration: none;
+}
+
+@media (max-width: 1399px) { .skew-slider-content h4 { font-size: 100px; } }
+@media (max-width: 1199px) { .skew-slider-content h4 { font-size:  90px; } }
+@media (max-width: 991px)  { .skew-slider-content h4 { font-size:  80px; } }
+@media (max-width: 767px)  { .skew-slider-content { width: 90%; padding: 0 20px; } .skew-slider-content h4 { font-size: 60px; } }
+
+/* ---------- Navigation Chevrons ─────────────────────────────────────
+   chevron-up   (bottom-left)  = previous slide
+   chevron-down (bottom-right) = next slide
+   ──────────────────────────────────────────────────────────────────── */
+.skew-slider-arrow {
+    position:        absolute;
+    bottom:          80px;
+    left:            0;
+    width:           100%;
+    display:         flex;
+    padding:         0 100px;
+    align-items:     center;
+    justify-content: space-between;
+    z-index:         99;
+    pointer-events:  none;
+}
+
+.skew-slider-area .skew-slider-arrow button {
+    pointer-events: all;
+    display:        flex;
+    align-items:    center;
+    gap:            0;
+    background:     none;
+    border:         none;
+    cursor:         pointer;
+    padding:        0;
+    outline:        none;
+}
+
+.nav-chevron {
+    width:      44px;
+    height:     44px;
+    display:    block;
+    transition: transform 0.35s ease;
+    filter:     brightness(0) invert(1);
+}
+.skew-slider-prev:hover .nav-chevron { transform: translateY(-6px); }
+.skew-slider-next:hover .nav-chevron { transform: translateY( 6px); }
+
+@media (max-width: 1399px) { .skew-slider-arrow { padding: 0 45px; } }
+@media (max-width: 767px)  { .skew-slider-arrow { padding: 0 20px; } }
+
+/* ---------- Slide Counter ---------- */
+.slides-numbers-wrap {
+    position:  absolute;
+    top:       50%;
+    right:     100px;
+    transform: translateY(-50%);
+    z-index:   99;
+}
+@media (max-width: 991px) { .slides-numbers-wrap { display: none; } }
+
+.slides-numbers {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+}
+.slides-numbers::before,
+.slides-numbers::after {
+    content:          '';
+    width:            2px;
+    height:           130px;
+    display:          block;
+    background-color: var(--tp-common-white);
+}
+.slides-numbers::before { margin-bottom: 30px; }
+.slides-numbers::after  { margin-top: 40px; }
+
+.slides-numbers span {
+    font-size:   14px;
+    font-weight: 600;
+    display:     block;
+    line-height: 1;
+    color:       var(--tp-common-white);
+}
+.slides-numbers .text-1 { transform: translateX(-5px); }
+.slides-numbers .text-2 { margin-left: 10px; transform: rotate(25deg); transform-origin: left bottom; }
+.slides-numbers .text-3 { margin-left: 27px; }

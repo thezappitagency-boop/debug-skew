@@ -1,0 +1,323 @@
+/* ============================================================
+   Cool Slide — Skew Slider  |  Elementor Widget CSS
+   Extracted & compiled from Agntix theme (cool-slide repo)
+   ============================================================ */
+
+/* ---------- Custom Font Faces ---------- */
+@font-face {
+    font-family: 'ClashDisplay-Semibold';
+    src: url('../fonts/ClashDisplay-Semibold.woff2') format('woff2'),
+         url('../fonts/ClashDisplay-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'MangoGrotesque-Regular';
+    src: url('../fonts/MangoGrotesque-Regular.woff2') format('woff2'),
+         url('../fonts/MangoGrotesque-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ---------- CSS Custom Properties (scoped) ---------- */
+.skew-slider-area {
+    --tp-common-white: #ffffff;
+    --tp-common-black: #020201;
+    --tp-ff-clash-semibold: 'ClashDisplay-Semibold', sans-serif;
+    --tp-ff-mango: 'MangoGrotesque-Regular', sans-serif;
+}
+
+/* ---------- Scoped reset so widget plays well with Elementor ---------- */
+.skew-slider-area *,
+.skew-slider-area *::before,
+.skew-slider-area *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Slide base ---------- */
+.slide {
+    width: 100%;
+    height: 100%;
+    grid-area: 1 / 1 / -1 / -1;
+    pointer-events: none;
+    opacity: 0;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    place-items: center;
+    will-change: transform, opacity;
+}
+.slide--current {
+    pointer-events: auto;
+    opacity: 1;
+}
+.slide--current .skew-slider-content {
+    opacity: 1;
+    visibility: visible;
+}
+.slide__img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    will-change: transform, opacity, filter;
+}
+
+/* ---------- Slider grid container ---------- */
+.skew-slider-wrap {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    grid-template-rows: 100%;
+    grid-template-columns: 100%;
+}
+
+/* ---------- Outer area ---------- */
+.skew-slider-area {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+/* ---------- Navigation Arrows ---------- */
+.skew-slider-arrow {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    padding: 0 100px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 99;
+    pointer-events: none;
+}
+.skew-slider-area .skew-slider-arrow button {
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+}
+.skew-slider-area .icon-1,
+.skew-slider-area .icon-2 {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.3s;
+}
+.skew-slider-area .skew-slider-prev:hover .icon-1 { transform: translateX(-4px); }
+.skew-slider-area .skew-slider-next:hover .icon-2 { transform: translateX(4px); }
+
+.skew-slider-area .slider-nav-text {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+}
+
+@media (max-width: 1399px) { .skew-slider-arrow { padding: 0 45px; } }
+@media (max-width: 767px)  { .skew-slider-arrow { padding: 0 20px; } }
+
+/* ---------- Slide Content Overlay ---------- */
+.skew-slider-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    padding-left: 320px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: none;
+}
+.slide--current .skew-slider-content { pointer-events: all; }
+
+.skew-slider-content > span {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+}
+.skew-slider-content h4 {
+    font-size: 140px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+    font-family: var(--tp-ff-clash-semibold);
+    margin: 0;
+}
+.skew-slider-content h4 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (max-width: 1399px) {
+    .skew-slider-content { padding-left: 200px; }
+    .skew-slider-content h4 { font-size: 100px; }
+}
+@media (max-width: 1199px) {
+    .skew-slider-content { padding-left: 150px; }
+    .skew-slider-content h4 { font-size: 90px; }
+}
+@media (max-width: 991px)  { .skew-slider-content h4 { font-size: 80px; } }
+@media (max-width: 767px)  {
+    .skew-slider-content { padding-left: 50px; }
+    .skew-slider-content h4 { font-size: 60px; }
+}
+
+/* ---------- Slide Counter ---------- */
+.slides-numbers-wrap {
+    position: absolute;
+    top: 50%;
+    right: 100px;
+    transform: translateY(-50%);
+    z-index: 99;
+}
+@media (max-width: 991px) { .slides-numbers-wrap { display: none; } }
+
+.slides-numbers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.slides-numbers::before,
+.slides-numbers::after {
+    content: '';
+    width: 2px;
+    height: 130px;
+    display: block;
+    background-color: var(--tp-common-white);
+}
+.slides-numbers::before { margin-bottom: 30px; }
+.slides-numbers::after  { margin-top: 40px; }
+
+.slides-numbers span {
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    line-height: 1;
+    color: var(--tp-common-white);
+}
+.slides-numbers .text-1 { transform: translateX(-5px); }
+.slides-numbers .text-2 { margin-left: 10px; transform: rotate(25deg); transform-origin: left bottom; }
+.slides-numbers .text-3 { margin-left: 27px; }
+
+/* ---------- Copyright (top centre) ---------- */
+.tp-portfolio-slider__copyright {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    z-index: 55;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+@media (max-width: 1199px) { .tp-portfolio-slider__copyright { top: 65px; } }
+@media (max-width: 767px)  { .tp-portfolio-slider__copyright { display: none; } }
+
+.tp-portfolio-slider__copyright p {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+}
+.tp-portfolio-slider__copyright a {
+    color: var(--tp-common-white);
+    text-decoration: none;
+    position: relative;
+}
+.tp-portfolio-slider__copyright a::after {
+    position: absolute;
+    content: '';
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    transition: 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    background-color: var(--tp-common-white);
+}
+.tp-portfolio-slider__copyright:hover a::after {
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---------- Social Links ---------- */
+.tp-portfolio-slider__social {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    z-index: 55;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg);
+}
+@media (max-width: 1199px) { .tp-portfolio-slider__social { left: 45px; } }
+@media (max-width: 767px)  { .tp-portfolio-slider__social { display: none; } }
+
+.tp-portfolio-slider__social a {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    margin: 14px 0;
+    display: inline-block;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: opacity 0.3s;
+}
+/* ---------- CTA Button (upper right) ---------- */
+.skew-slider-cta {
+    position: absolute;
+    top: 40px;
+    right: 100px;
+    z-index: 99;
+}
+@media (max-width: 1399px) { .skew-slider-cta { right: 45px; } }
+@media (max-width: 767px)  { .skew-slider-cta { right: 20px; top: 20px; } }
+
+.skew-slider-cta__btn {
+    display: inline-block;
+    padding: 13px 26px;
+    color: var(--tp-common-white);
+    background: transparent;
+    border: 2px solid var(--tp-common-white);
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background 0.25s ease;
+}
+.skew-slider-cta__btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
